@@ -1,0 +1,27 @@
+name: Lint
+
+on:
+  pull_request:
+    branches: [main]
+
+jobs:
+  lint:
+    name: Lint Lua
+    runs-on: ubuntu-latest
+    steps:
+      # - uses: actions/checkout@v4
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+
+      # - uses: lunarmodules/luacheck@v1
+      - name: Run luacheck
+        uses: lunarmodules/luacheck@cc089e3f65acdd1ef8716cc73a3eca24a6b845e4
+        with:
+          args: . --config .luacheckrc
+
+      # - uses: JohnnyMorganz/stylua-action@v4
+      - name: Check formatting
+        uses: JohnnyMorganz/stylua-action@76fd70c03e6340ceaf673366712db9b20560b402
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          version: latest
+          args: --check .
