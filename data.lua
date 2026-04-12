@@ -1,4 +1,5 @@
--- data.lua
+require("prototypes.autoplace-controls")
+require("prototypes.resources")
 require("prototypes.recipes")
 require("prototypes.items")
 require("prototypes.technologies")
