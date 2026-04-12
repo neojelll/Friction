@@ -1,3 +1,5 @@
 require("prototypes.ores.autoplace-controls")
 require("prototypes.ores.quartz.resource")
 require("prototypes.ores.quartz.item")
+require("prototypes.ores.tin.resource")
+require("prototypes.ores.tin.item")
