@@ -3,11 +3,11 @@ local resource_autoplace = require("resource-autoplace")
 
 local quartz_ore = table.deepcopy(data.raw["resource"]["iron-ore"])
 quartz_ore.name = "quartz-ore"
-quartz_ore.icon = "__Friction__/graphics/icons/quartz-ore.png"
+quartz_ore.icon = "__Friction__/graphics/icons/ores/quartz-ore.png"
 quartz_ore.icon_size = 64
 quartz_ore.stages = {
   sheet = {
-    filename = "__Friction__/graphics/icons/quartz-ore.png",
+    filename = "__Friction__/graphics/icons/ores/quartz-ore.png",
     priority = "extra-high",
     width = 64,
     height = 64,
