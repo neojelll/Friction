@@ -14,12 +14,12 @@ quartz_ore.stages = {
     frame_count = 1,
     variation_count = 1,
     scale = 0.5,
-  }
+  },
 }
-quartz_ore.stage_counts = {0}
+quartz_ore.stage_counts = { 0 }
 quartz_ore.stages_effect = nil
 quartz_ore.minable.result = "quartz-ore"
-quartz_ore.autoplace = resource_autoplace.resource_autoplace_settings{
+quartz_ore.autoplace = resource_autoplace.resource_autoplace_settings({
   name = "quartz-ore",
   order = "b",
   base_density = 8,
@@ -27,6 +27,6 @@ quartz_ore.autoplace = resource_autoplace.resource_autoplace_settings{
   has_starting_area_placement = false,
   random_spot_size_minimum = 2,
   random_spot_size_maximum = 4,
-}
+})
 
-data:extend({quartz_ore})
+data:extend({ quartz_ore })

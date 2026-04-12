@@ -3,10 +3,10 @@ data:extend({
   {
     type = "autoplace-control",
     name = "quartz-ore",
-    localised_name = {"", "[entity=quartz-ore] ", {"entity-name.quartz-ore"}},
+    localised_name = { "", "[entity=quartz-ore] ", { "entity-name.quartz-ore" } },
     richness = true,
     order = "b[quartz-ore]",
-    category = "resource"
+    category = "resource",
   },
 })
 
