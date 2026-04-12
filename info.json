@@ -1,0 +1,9 @@
+{
+	"name": "Friction",
+	"version": "0.1.0",
+	"title": "Friction",
+	"author": "Timofey",
+	"description": "Realistic production processes. Every reaction has steps, every shortcut has consequences.",
+	"factorio_version": "2.0",
+	"dependencies": ["base >= 2.0"]
+}
