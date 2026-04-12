@@ -1,4 +1,4 @@
--- items.lua
+-- item.lua
 local quartz_item = table.deepcopy(data.raw["item"]["iron-ore"])
 quartz_item.name = "quartz-ore"
 quartz_item.localised_name = {"item-name.quartz-ore"}

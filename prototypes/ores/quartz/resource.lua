@@ -1,4 +1,4 @@
--- resources.lua
+-- resource.lua
 local resource_autoplace = require("resource-autoplace")
 
 local quartz_ore = table.deepcopy(data.raw["resource"]["iron-ore"])
