@@ -5,6 +5,7 @@ local quartz_ore = table.deepcopy(data.raw["resource"]["iron-ore"])
 quartz_ore.name = "quartz-ore"
 quartz_ore.icon = "__Friction__/graphics/icons/ores/quartz-ore.png"
 quartz_ore.icon_size = 64
+quartz_ore.map_color = { r = 0.9, g = 0.9, b = 0.9 }
 quartz_ore.stages = {
   sheet = {
     filename = "__Friction__/graphics/icons/ores/quartz-ore.png",
