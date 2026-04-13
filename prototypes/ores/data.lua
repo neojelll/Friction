@@ -9,9 +9,16 @@ local ores = {
   {
     name = "tin-ore",
     icon = "__Friction__/graphics/icons/ores/tin-ore.png",
-    color = { r = 0.6, g = 0.6, b = 0.6 },
+    color = { r = 0.42, g = 0.23, b = 0.16 },
     order = "z[tin-ore]",
-  }
+  },
+
+  {
+    name = "gold-ore",
+    icon = "__Friction__/graphics/icons/ores/gold-ore.png",
+    color = { r = 0.78, g = 0.65, b = 0.20 },
+    order = "z[gold-ore]",
+  },
 }
 
 return ores
