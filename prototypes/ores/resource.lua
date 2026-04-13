@@ -32,7 +32,7 @@ function M.make(def)
     order = "b",
     base_density = 8,
     base_spots_per_km2 = 1.5,
-    has_starting_area_placement = false,
+    has_starting_area_placement = true,
     random_spot_size_minimum = 2,
     random_spot_size_maximum = 4,
   })
