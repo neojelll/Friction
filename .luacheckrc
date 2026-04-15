@@ -1,4 +1,3 @@
--- .luacheckrc
 globals = {
   -- Factorio data stage
   "data",
