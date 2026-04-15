@@ -20,7 +20,7 @@ function M.make(def)
       frame_count = 8,
       variation_count = 8,
       scale = 0.5,
-    }
+    },
   }
 
   res.stages_effect = nil

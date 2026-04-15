@@ -10,7 +10,7 @@ function M.make(def)
   item.icon_size = 64
 
   item.pictures = {
-    { size = 64, filename = def.icon,                          scale = 0.5, mipmap_count = 1 },
+    { size = 64, filename = def.icon, scale = 0.5, mipmap_count = 1 },
     { size = 64, filename = def.icon:gsub("%.png", "-1.png"), scale = 0.5, mipmap_count = 1 },
     { size = 64, filename = def.icon:gsub("%.png", "-2.png"), scale = 0.5, mipmap_count = 1 },
     { size = 64, filename = def.icon:gsub("%.png", "-3.png"), scale = 0.5, mipmap_count = 1 },
