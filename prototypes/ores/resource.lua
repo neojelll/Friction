@@ -9,32 +9,30 @@ function M.make(def)
   res.icon = def.icon
   res.icon_size = 64
   res.map_color = def.color
+  res.minable.result = def.name
 
   res.stages = {
     sheet = {
-      filename = def.icon,
+      filename = def.entity_sheet,
       priority = "extra-high",
-      width = 64,
-      height = 64,
-      frame_count = 1,
-      variation_count = 1,
+      width = 128,
+      height = 128,
+      frame_count = 8,
+      variation_count = 8,
       scale = 0.5,
     },
   }
 
-  res.stage_counts = { 0 }
   res.stages_effect = nil
-
-  res.minable.result = def.name
 
   res.autoplace = resource_autoplace.resource_autoplace_settings({
     name = def.name,
     order = "b",
-    base_density = 8,
-    base_spots_per_km2 = 1.5,
+    base_density = 10,
     has_starting_area_placement = true,
-    random_spot_size_minimum = 2,
-    random_spot_size_maximum = 4,
+    regular_rq_factor_multiplier = 1.10,
+    starting_rq_factor_multiplier = 1.5,
+    candidate_spot_count = 22,
   })
 
   return res
