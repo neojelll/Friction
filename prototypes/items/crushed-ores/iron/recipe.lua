@@ -3,7 +3,7 @@ data:extend({
     type = "recipe",
     name = "crushed-iron-ore",
     localised_name = { "recipe-name.crushed-iron-ore" },
-    category = "crafting",
+    category = "crushing",
     energy_required = 2,
     enabled = true,
     ingredients = {
