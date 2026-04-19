@@ -1,1 +1,1 @@
-require("prototypes.items.plates.recipe")
+require("prototypes.items.plates.iron.recipe")
