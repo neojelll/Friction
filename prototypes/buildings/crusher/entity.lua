@@ -14,7 +14,7 @@ data:extend({
     result_inventory_size = 1,
     source_inventory_size = 1,
     energy_usage = "90kW",
-    crafting_speed = 1,
+    crafting_speed = 4,
     energy_source = {
       type = "burner",
       fuel_categories = { "chemical" },
