@@ -2,7 +2,7 @@ data:extend({
   {
     type = "technology",
     name = "primitive-crushing",
-    icon = "__base__/graphics/technology/automation.png",
+    icon = "__Friction__/graphics/technology/automation.png",
     icon_size = 256,
     research_trigger = {
       type = "mine-entity",
@@ -11,6 +11,7 @@ data:extend({
     },
     effects = {
       { type = "unlock-recipe", recipe = "crushed-iron-ore" },
+      { type = "unlock-recipe", recipe = "crushed-iron-ore-by-hand" },
     },
   },
 })
