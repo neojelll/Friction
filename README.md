@@ -16,12 +16,18 @@ Download from the [Factorio Mod Portal](https://mods.factorio.com/) or place the
 
 ## Development
 
-```bash
-# Lint
-luacheck .
+Install [mise](https://mise.jdx.dev/), then:
 
-# Format check
-stylua --check .
+```bash
+mise install  # installs stylua
+```
+
+Install `luacheck` via your package manager (`brew install luacheck`, `apt install lua-check`, or `luarocks install luacheck`).
+
+```bash
+mise run lint       # luacheck linter
+mise run fmt        # format with stylua
+mise run fmt-check  # check formatting without modifying files
 ```
 
 Releases are automated via [release-please](https://github.com/googleapis/release-please).
