@@ -5,7 +5,7 @@ data:extend({
     localised_name = { "item-name.glass" },
     icons = {
       {
-        icon = "__Friction__/graphics/icons/ores/quartz/quartz-ore.png",
+        icon = "__Friction__/graphics/icons/items/glass_plate.png",
         icon_size = 64,
         tint = { r = 0.6, g = 0.85, b = 1.0, a = 0.9 },
       },
