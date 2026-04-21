@@ -7,7 +7,6 @@ data:extend({
     research_trigger = {
       type = "mine-entity",
       entity = "iron-ore",
-      count = 10,
     },
     effects = {
       { type = "unlock-recipe", recipe = "crushed-iron-ore" },
