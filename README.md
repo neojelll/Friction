@@ -16,27 +16,13 @@ Download from the [Factorio Mod Portal](https://mods.factorio.com/) or place the
 
 ## Development
 
-### Prerequisites
-
-Install [mise](https://mise.jdx.dev/) for tool version management, then run:
+Install [mise](https://mise.jdx.dev/), then:
 
 ```bash
-mise install
+mise install  # installs stylua
 ```
 
-This installs `stylua`. Additionally, install `luacheck` via Homebrew (macOS/Linux):
-
-```bash
-brew install luacheck
-```
-
-Or via LuaRocks:
-
-```bash
-luarocks install luacheck
-```
-
-### Tasks
+Install `luacheck` via your package manager (`brew install luacheck`, `apt install lua-check`, or `luarocks install luacheck`).
 
 ```bash
 mise run lint       # luacheck linter
