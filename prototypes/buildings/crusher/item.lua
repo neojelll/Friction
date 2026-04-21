@@ -8,6 +8,6 @@ data:extend({
     subgroup = "production-machine",
     order = "a[crusher]",
     stack_size = 10,
-    place_result = "crusher",
+    place_result = "friction-crusher",
   },
 })
