@@ -1,0 +1,14 @@
+[tools]
+stylua = "2.4.1"
+
+[tasks.lint]
+description = "Run luacheck linter"
+run = "luacheck . --config .luacheckrc"
+
+[tasks.fmt]
+description = "Format Lua files with stylua"
+run = "stylua ."
+
+[tasks.fmt-check]
+description = "Check Lua formatting without modifying files"
+run = "stylua --check ."
