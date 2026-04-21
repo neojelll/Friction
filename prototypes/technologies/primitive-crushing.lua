@@ -2,7 +2,7 @@ data:extend({
   {
     type = "technology",
     name = "primitive-crushing",
-    icon = "__Friction__/graphics/icons/technologies/primitive-crushing.png",
+    icon = "__Friction__/graphics/technology/primitive-crushing.png",
     icon_size = 256,
     research_trigger = {
       type = "mine-entity",
