@@ -1,7 +1,7 @@
 data:extend({
   {
     type = "furnace",
-    name = "crusher",
+    name = "friction-crusher",
     icon = "__Friction__/graphics/icons/buildings/crusher.png",
     icon_size = 64,
     flags = { "placeable-neutral", "placeable-player", "player-creation" },
