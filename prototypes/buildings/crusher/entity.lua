@@ -5,7 +5,7 @@ data:extend({
     icon = "__Friction__/graphics/icons/buildings/crusher.png",
     icon_size = 64,
     flags = { "placeable-neutral", "placeable-player", "player-creation" },
-    minable = { mining_time = 0.5, result = "crusher" },
+    minable = { mining_time = 0.5, result = "friction-crusher" },
     max_health = 200,
     corpse = "medium-remnants",
     collision_box = { { -0.7, -0.7 }, { 0.7, 0.7 } },
@@ -36,21 +36,11 @@ data:extend({
       animation = {
         layers = {
           {
-            -- TODO: replace with dedicated crusher sprite
             filename = "__Friction__/graphics/entity/buildings/crusher.png",
             priority = "extra-high",
-            width = 151,
-            height = 146,
+            width = 256,
+            height = 256,
             shift = { -0.25 / 32, 6 / 32 },
-            scale = 0.5,
-          },
-          {
-            filename = "__Friction__/graphics/entity/buildings/crusher-shadow.png",
-            priority = "extra-high",
-            width = 164,
-            height = 74,
-            draw_as_shadow = true,
-            shift = { 14.5 / 32, 13 / 32 },
             scale = 0.5,
           },
         },
