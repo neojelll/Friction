@@ -1,10 +1,10 @@
 data:extend({
   {
     type = "item",
-    name = "crusher",
-    localised_name = { "item-name.crusher" },
+    name = "friction-crusher",
+    localised_name = { "item-name.friction-crusher" },
     icon = "__Friction__/graphics/icons/buildings/crusher.png",
-    icon_size = 64,
+    icon_size = 256,
     subgroup = "production-machine",
     order = "a[crusher]",
     stack_size = 10,
