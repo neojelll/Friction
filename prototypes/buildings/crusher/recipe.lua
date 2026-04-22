@@ -1,8 +1,8 @@
 data:extend({
   {
     type = "recipe",
-    name = "crusher",
-    localised_name = { "recipe-name.crusher" },
+    name = "friction-crusher",
+    localised_name = { "recipe-name.friction-crusher" },
     category = "crafting",
     energy_required = 5,
     enabled = true,
@@ -11,7 +11,7 @@ data:extend({
       { type = "item", name = "stone", amount = 10 },
     },
     results = {
-      { type = "item", name = "crusher", amount = 1 },
+      { type = "item", name = "friction-crusher", amount = 1 },
     },
   },
 })
