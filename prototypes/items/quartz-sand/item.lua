@@ -7,7 +7,6 @@ data:extend({
       {
         icon = "__Friction__/graphics/icons/items/quartz-sand.png",
         icon_size = 64,
-        tint = { r = 0.85, g = 0.78, b = 0.55, a = 1.0 },
       },
     },
     subgroup = "raw-resource",
