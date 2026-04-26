@@ -28,7 +28,7 @@ data.raw.recipe["advanced-circuit"] = {
   },
 }
 
-local adv_tech = data.raw.technology["advanced-electronics"]
+local adv_tech = data.raw.technology["advanced-circuit"]
 if adv_tech and adv_tech.effects then
   table.insert(adv_tech.effects, { type = "unlock-recipe", recipe = "gold-wire" })
 end
