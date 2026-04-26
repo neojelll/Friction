@@ -7,7 +7,7 @@ data:extend({
     energy_required = 1,
     enabled = false,
     ingredients = {
-      { type = "item", name = "gold-ingot", amount = 1 },
+      { type = "item", name = "gold-plate", amount = 1 },
     },
     results = {
       { type = "item", name = "gold-wire", amount = 4 },

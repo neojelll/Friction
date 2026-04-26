@@ -1,8 +1,8 @@
 data:extend({
   {
     type = "recipe",
-    name = "gold-ingot",
-    localised_name = { "recipe-name.gold-ingot" },
+    name = "gold-plate",
+    localised_name = { "recipe-name.gold-plate" },
     category = "smelting",
     energy_required = 4,
     enabled = true,
@@ -10,7 +10,7 @@ data:extend({
       { type = "item", name = "gold-dust", amount = 2 },
     },
     results = {
-      { type = "item", name = "gold-ingot", amount = 1 },
+      { type = "item", name = "gold-plate", amount = 1 },
     },
   },
 })
