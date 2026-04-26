@@ -7,7 +7,7 @@ data:extend({
     energy_required = 4,
     enabled = true,
     ingredients = {
-      { type = "item", name = "gold-dust", amount = 2 },
+      { type = "item", name = "gold-sand", amount = 2 },
     },
     results = {
       { type = "item", name = "gold-plate", amount = 1 },
