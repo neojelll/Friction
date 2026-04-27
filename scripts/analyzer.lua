@@ -1,4 +1,5 @@
 local conditions = require("scripts.technology-conditions")
+local analyzer_gui = require("scripts.analyzer_gui")
 
 local M = {}
 
@@ -177,9 +178,10 @@ function M.on_tick()
           text = { "message.friction-research-complete", { "technology-name." .. tech_name } },
           color = { r = 0.4, g = 1.0, b = 0.4 },
         })
+        analyzer_gui.refresh(entity, data.progress, data.technology)
       else
-        -- Keep card in sync so progress survives if player removes it.
         set_card_progress(stack, tech_name, data.progress)
+        analyzer_gui.refresh(entity, data.progress, data.technology)
       end
     end
 

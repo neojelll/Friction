@@ -1,4 +1,5 @@
 local analyzer = require("scripts.analyzer")
+local analyzer_gui = require("scripts.analyzer_gui")
 
 script.on_init(analyzer.on_init)
 script.on_load(analyzer.on_load)
@@ -22,3 +23,5 @@ for _, event in pairs(removed_events) do
 end
 
 script.on_nth_tick(60, analyzer.on_tick)
+script.on_event(defines.events.on_gui_opened, analyzer_gui.on_gui_opened)
+script.on_event(defines.events.on_gui_closed, analyzer_gui.on_gui_closed)
