@@ -6,6 +6,11 @@ data:extend({
     icon_size = 256,
     enabled = true,
     hidden = true,
+    unit = {
+      count = 1,
+      ingredients = { { "automation-science-pack", 1 } },
+      time = 1,
+    },
     effects = {
       { type = "unlock-recipe", recipe = "crushed-iron-ore" },
       { type = "unlock-recipe", recipe = "crushed-iron-ore-by-hand" },
