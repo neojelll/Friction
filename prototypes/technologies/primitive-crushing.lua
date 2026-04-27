@@ -5,7 +5,6 @@ data:extend({
     icon = "__Friction__/graphics/technology/primitive-crushing.png",
     icon_size = 256,
     enabled = true,
-    hidden = true,
     research_trigger = {
       type = "craft-item",
       item = "friction-research-token",
