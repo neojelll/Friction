@@ -168,14 +168,13 @@ function M.on_tick()
       data.progress = data.progress + (1 / cond.duration)
       if data.progress >= 1 then
         data.progress = 1
-        if tech then tech.researched = true end
-        inv[1].clear()
+        inv[1].set_stack({ name = "friction-full-data-card", count = 1 })
         data.technology = nil
         data.progress = 0
         entity.surface.create_entity({
           name = "flying-text",
           position = entity.position,
-          text = { "message.friction-research-complete", { "technology-name." .. tech_name } },
+          text = { "message.friction-card-ready", { "technology-name." .. tech_name } },
           color = { r = 0.4, g = 1.0, b = 0.4 },
         })
         analyzer_gui.refresh(entity, data.progress, data.technology)

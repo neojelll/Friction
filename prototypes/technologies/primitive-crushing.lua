@@ -5,11 +5,10 @@ data:extend({
     icon = "__Friction__/graphics/technology/primitive-crushing.png",
     icon_size = 256,
     enabled = true,
-    hidden = true,
-    research_trigger = {
-      type = "craft-item",
-      item = "friction-research-token",
+    unit = {
       count = 1,
+      ingredients = { { "friction-full-data-card", 1 } },
+      time = 15,
     },
     effects = {
       { type = "unlock-recipe", recipe = "crushed-iron-ore" },
