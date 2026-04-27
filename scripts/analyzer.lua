@@ -167,12 +167,16 @@ function M.on_tick()
       data.progress = data.progress + (1 / cond.duration)
       if data.progress >= 1 then
         data.progress = 1
-        -- Unlock the technology.
         if tech then entity.force.research_technology(tech_name) end
-        -- Remove the card (it has been consumed).
         inv[1].clear()
         data.technology = nil
         data.progress = 0
+        entity.surface.create_entity({
+          name = "flying-text",
+          position = entity.position,
+          text = { "message.friction-research-complete", { "technology-name." .. tech_name } },
+          color = { r = 0.4, g = 1.0, b = 0.4 },
+        })
       else
         -- Keep card in sync so progress survives if player removes it.
         set_card_progress(stack, tech_name, data.progress)
