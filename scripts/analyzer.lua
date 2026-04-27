@@ -139,7 +139,6 @@ function M.on_tick()
       for tech_name, _ in pairs(conditions) do
         local tech = entity.force.technologies[tech_name]
         if tech and not tech.researched then
-          card_tech = tech_name
           set_card_progress(stack, tech_name, 0)
           data.technology = tech_name
           data.progress = 0
@@ -171,12 +170,10 @@ function M.on_tick()
         inv[1].set_stack({ name = "friction-full-data-card", count = 1 })
         data.technology = nil
         data.progress = 0
-        entity.surface.create_entity({
-          name = "flying-text",
-          position = entity.position,
-          text = { "message.friction-card-ready", { "technology-name." .. tech_name } },
-          color = { r = 0.4, g = 1.0, b = 0.4 },
-        })
+        local msg = { "message.friction-card-ready", { "technology-name." .. tech_name } }
+        for _, player in pairs(entity.force.players) do
+          player.print(msg, { r = 0.4, g = 1.0, b = 0.4 })
+        end
         analyzer_gui.refresh(entity, data.progress, data.technology)
       else
         set_card_progress(stack, tech_name, data.progress)
