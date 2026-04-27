@@ -10,7 +10,6 @@ data:extend({
     subgroup = "intermediate-product",
     order = "z[friction-token]",
     stack_size = 1,
-    flags = { "hidden" },
   },
 })
 
