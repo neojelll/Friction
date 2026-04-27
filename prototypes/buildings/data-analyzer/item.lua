@@ -3,7 +3,7 @@ data:extend({
     type = "item",
     name = "friction-data-analyzer",
     localised_name = { "item-name.friction-data-analyzer" },
-    icon = "__Friction__/graphics/icons/buildings/data-analyzer.png",
+    icon = "__Friction__/graphics/icons/buildings/crusher.png",
     icon_size = 64,
     subgroup = "production-machine",
     order = "b[data-analyzer]",
