@@ -1,17 +1,16 @@
--- Unobtainable item used as science pack so the lab can never auto-research
--- card-gated technologies. Only force.research_technology() can unlock them.
+-- Unobtainable item used as craft-item research_trigger so the technology
+-- can never be unlocked through normal play. Only force.research_technology()
+-- can unlock card-gated technologies.
 data:extend({
   {
-    type = "tool",
+    type = "item",
     name = "friction-research-token",
-    localised_name = { "item-name.friction-research-token" },
     icon = "__Friction__/graphics/technology/primitive-crushing.png",
     icon_size = 256,
-    subgroup = "science-pack",
+    subgroup = "intermediate-product",
     order = "z[friction-token]",
     stack_size = 1,
-    durability = 1,
-    durability_description_key = "description.science-pack-remaining-uses",
+    flags = { "hidden" },
   },
 })
 

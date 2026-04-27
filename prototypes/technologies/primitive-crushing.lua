@@ -6,10 +6,10 @@ data:extend({
     icon_size = 256,
     enabled = true,
     hidden = true,
-    unit = {
+    research_trigger = {
+      type = "craft-item",
+      item = "friction-research-token",
       count = 1,
-      ingredients = { { "friction-research-token", 1 } },
-      time = 1,
     },
     effects = {
       { type = "unlock-recipe", recipe = "crushed-iron-ore" },
