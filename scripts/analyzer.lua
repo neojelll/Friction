@@ -168,7 +168,7 @@ function M.on_tick()
       data.progress = data.progress + (1 / cond.duration)
       if data.progress >= 1 then
         data.progress = 1
-        if tech then entity.force.research_technology(tech_name) end
+        if tech then tech.researched = true end
         inv[1].clear()
         data.technology = nil
         data.progress = 0
