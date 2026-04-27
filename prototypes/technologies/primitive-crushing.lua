@@ -8,7 +8,7 @@ data:extend({
     hidden = true,
     unit = {
       count = 1,
-      ingredients = { { "automation-science-pack", 1 } },
+      ingredients = { { "friction-research-token", 1 } },
       time = 1,
     },
     effects = {
