@@ -4,36 +4,32 @@ local ENTITY_NAME = "friction-data-analyzer"
 local GUI_NAME = "friction-analyzer-panel"
 local SCAN_RADIUS = 50
 
+-- Not persisted: render objects are cosmetic and GUIs are closed on load.
+local renders = {}
+
 local function get_progress(entity)
   local data = storage.analyzers and storage.analyzers[entity.unit_number]
   return data and data.progress or 0
 end
 
 local function clear_radius_render(player_index)
-  if not storage.analyzer_renders then
-    return
-  end
-  local obj = storage.analyzer_renders[player_index]
+  local obj = renders[player_index]
   if obj and obj.valid then
     obj.destroy()
   end
-  storage.analyzer_renders[player_index] = nil
+  renders[player_index] = nil
 end
 
 local function draw_radius_render(player, entity)
-  if not storage.analyzer_renders then
-    storage.analyzer_renders = {}
-  end
   clear_radius_render(player.index)
-  storage.analyzer_renders[player.index] = rendering.draw_circle({
-    color = { r = 0.2, g = 0.9, b = 0.2, a = 0.2 },
+  renders[player.index] = rendering.draw_circle({
+    color = { r = 0.2, g = 0.9, b = 0.2, a = 0.5 },
     radius = SCAN_RADIUS,
-    width = 2,
+    width = 3,
     filled = false,
     target = entity.position,
     surface = entity.surface,
     players = { player },
-    draw_on_ground = true,
   })
 end
 
