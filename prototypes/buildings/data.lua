@@ -1,3 +1,6 @@
 require("prototypes.buildings.crusher.entity")
 require("prototypes.buildings.crusher.item")
 require("prototypes.buildings.crusher.recipe")
+require("prototypes.buildings.data-analyzer.entity")
+require("prototypes.buildings.data-analyzer.item")
+require("prototypes.buildings.data-analyzer.recipe")

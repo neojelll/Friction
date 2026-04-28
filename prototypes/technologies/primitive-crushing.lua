@@ -4,9 +4,11 @@ data:extend({
     name = "primitive-crushing",
     icon = "__Friction__/graphics/technology/primitive-crushing.png",
     icon_size = 256,
-    research_trigger = {
-      type = "mine-entity",
-      entity = "iron-ore",
+    enabled = true,
+    unit = {
+      count = 1,
+      ingredients = { { "friction-full-data-card", 1 } },
+      time = 15,
     },
     effects = {
       { type = "unlock-recipe", recipe = "crushed-iron-ore" },

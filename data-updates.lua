@@ -1,3 +1,5 @@
+table.insert(data.raw.lab["lab"].inputs, "friction-full-data-card")
+
 local function add_glass(recipe_name, amount)
   local recipe = data.raw.recipe[recipe_name]
   if recipe and recipe.ingredients then
