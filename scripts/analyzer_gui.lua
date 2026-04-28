@@ -29,10 +29,11 @@ local function draw_radius_render(player, entity)
     filled = false,
     target = entity.position,
     surface = entity.surface,
-    players = { player.index },
+    players = { player },
   })
   if ok then
     renders[player.index] = result
+    player.print("[friction] circle drawn id=" .. tostring(result and result.id))
   else
     player.print("[friction] render error: " .. tostring(result))
   end
