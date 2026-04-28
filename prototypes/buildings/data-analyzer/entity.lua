@@ -13,6 +13,11 @@ data:extend({
     collision_box = { { -0.7, -0.7 }, { 0.7, 0.7 } },
     selection_box = { { -1, -1 }, { 1, 1 } },
     inventory_size = 2,
+    radius_visualisation_specification = {
+      distance = 50,
+      draw_in_cursor = true,
+      draw_on_selection = true,
+    },
     picture = {
       filename = "__Friction__/graphics/entity/buildings/crusher.png",
       priority = "extra-high",

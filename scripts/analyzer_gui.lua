@@ -1,38 +1,19 @@
 local M = {}
 
 local ENTITY_NAME = "friction-data-analyzer"
-local CURSOR_ITEM = "friction-data-analyzer"
 local GUI_NAME = "friction-analyzer-panel"
 local SCAN_RADIUS = 50
 
--- Module-level render tables: not persisted, GUIs reset on load.
-local gui_renders = {}    -- open when GUI is open
-local hover_renders = {}  -- open when mouse hovers over entity
-local cursor_renders = {} -- open when holding the item
+-- Only the GUI-open circle is drawn via Lua; cursor/hover are handled by
+-- radius_visualisation_specification in the entity prototype.
+local gui_renders = {}
 
-local function clear_render(tbl, player_index)
-  local obj = tbl[player_index]
+local function clear_render(player_index)
+  local obj = gui_renders[player_index]
   if obj and obj.valid then
     obj.destroy()
   end
-  tbl[player_index] = nil
-end
-
-local function make_circle(params)
-  local ok, result = pcall(rendering.draw_circle, params)
-  return ok and result or nil
-end
-
-local function circle_params(target, surface, player)
-  return {
-    color = { r = 0.2, g = 0.9, b = 0.2, a = 0.4 },
-    radius = SCAN_RADIUS,
-    width = 2,
-    filled = false,
-    target = target,
-    surface = surface,
-    players = { player },
-  }
+  gui_renders[player_index] = nil
 end
 
 local function get_progress(entity)
@@ -87,8 +68,19 @@ function M.on_gui_opened(event)
   end
   local player = game.players[event.player_index]
   build_gui(player, entity)
-  clear_render(gui_renders, player.index)
-  gui_renders[player.index] = make_circle(circle_params(entity.position, entity.surface, player))
+  clear_render(player.index)
+  local ok, result = pcall(rendering.draw_circle, {
+    color = { r = 0.2, g = 0.9, b = 0.2, a = 0.4 },
+    radius = SCAN_RADIUS,
+    width = 2,
+    filled = false,
+    target = entity.position,
+    surface = entity.surface,
+    players = { player },
+  })
+  if ok then
+    gui_renders[player.index] = result
+  end
 end
 
 function M.on_gui_closed(event)
@@ -99,44 +91,7 @@ function M.on_gui_closed(event)
   if player.gui.relative[GUI_NAME] then
     player.gui.relative[GUI_NAME].destroy()
   end
-  clear_render(gui_renders, event.player_index)
-end
-
-function M.on_selected_entity_changed(event)
-  local player = game.players[event.player_index]
-  if not player or not player.valid then
-    return
-  end
-  local entity = player.selected
-  if entity and entity.valid and entity.name == ENTITY_NAME then
-    clear_render(hover_renders, player.index)
-    hover_renders[player.index] = make_circle(circle_params(entity.position, entity.surface, player))
-  else
-    clear_render(hover_renders, player.index)
-  end
-end
-
--- Called every tick from control.lua to keep cursor circle following the mouse.
-function M.on_tick_render()
-  for _, player in pairs(game.players) do
-    if not player.valid then
-      goto continue
-    end
-    local cursor = player.cursor_stack
-    local has_item = cursor and cursor.valid_for_read and cursor.name == CURSOR_ITEM
-    if has_item then
-      local pos = player.position
-      local obj = cursor_renders[player.index]
-      if not obj or not obj.valid then
-        cursor_renders[player.index] = make_circle(circle_params(pos, player.surface, player))
-      else
-        obj.target = pos
-      end
-    else
-      clear_render(cursor_renders, player.index)
-    end
-    ::continue::
-  end
+  clear_render(event.player_index)
 end
 
 function M.refresh(entity, progress)
