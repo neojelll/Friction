@@ -125,7 +125,7 @@ function M.on_tick_render()
     local cursor = player.cursor_stack
     local has_item = cursor and cursor.valid_for_read and cursor.name == CURSOR_ITEM
     if has_item then
-      local pos = player.cursor_position
+      local pos = player.position
       local obj = cursor_renders[player.index]
       if not obj or not obj.valid then
         cursor_renders[player.index] = make_circle(circle_params(pos, player.surface, player))
