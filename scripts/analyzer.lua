@@ -9,10 +9,16 @@ local SCAN_TYPES = { "assembling-machine", "furnace", "rocket-silo" }
 
 -- Returns items/sec this entity produces of result_name, or nil if it doesn't.
 local function get_production_rate(entity, recipe_name)
-  if not entity.valid then return nil end
+  if not entity.valid then
+    return nil
+  end
   local recipe = entity.get_recipe()
-  if not recipe or recipe.name ~= recipe_name then return nil end
-  if entity.status ~= defines.entity_status.working then return nil end
+  if not recipe or recipe.name ~= recipe_name then
+    return nil
+  end
+  if entity.status ~= defines.entity_status.working then
+    return nil
+  end
 
   for _, result in pairs(recipe.products) do
     if result.name == recipe_name then
@@ -33,7 +39,9 @@ local function measure_rate(surface, position, radius, recipe_name)
     })
     for _, entity in pairs(entities) do
       local rate = get_production_rate(entity, recipe_name)
-      if rate then total = total + rate end
+      if rate then
+        total = total + rate
+      end
     end
   end
   return total
@@ -43,22 +51,30 @@ end
 local function conditions_met(surface, position, cond)
   for _, req in pairs(cond.requirements) do
     local rate = measure_rate(surface, position, cond.radius, req.recipe)
-    if rate < req.min_rate then return false end
+    if rate < req.min_rate then
+      return false
+    end
   end
   return true
 end
 
 -- Reads the technology name stored in card tags, or nil.
 local function card_technology(stack)
-  if not stack or not stack.valid_for_read then return nil end
-  if stack.name ~= CARD_NAME then return nil end
+  if not stack or not stack.valid_for_read then
+    return nil
+  end
+  if stack.name ~= CARD_NAME then
+    return nil
+  end
   local tags = stack.tags
   return tags and tags.technology or nil
 end
 
 -- Reads accumulated progress from card tags (0.0 – 1.0).
 local function card_progress(stack)
-  if not stack or not stack.valid_for_read then return 0 end
+  if not stack or not stack.valid_for_read then
+    return 0
+  end
   local tags = stack.tags
   return tags and tags.progress or 0
 end
@@ -71,11 +87,17 @@ end
 -- Transfers progress from storage into the card currently in the analyzer.
 local function flush_to_card(analyzer_data)
   local entity = analyzer_data.entity
-  if not entity or not entity.valid then return end
+  if not entity or not entity.valid then
+    return
+  end
   local inv = entity.get_inventory(defines.inventory.chest)
   local stack = inv and inv[1]
-  if not stack or not stack.valid_for_read then return end
-  if stack.name ~= CARD_NAME then return end
+  if not stack or not stack.valid_for_read then
+    return
+  end
+  if stack.name ~= CARD_NAME then
+    return
+  end
   set_card_progress(stack, analyzer_data.technology, analyzer_data.progress)
 end
 
@@ -120,7 +142,9 @@ end
 function M.on_tick()
   for _, data in pairs(storage.analyzers) do
     local entity = data.entity
-    if not entity or not entity.valid then goto continue end
+    if not entity or not entity.valid then
+      goto continue
+    end
 
     local inv = entity.get_inventory(defines.inventory.chest)
     local stack = inv and inv[1]
@@ -156,11 +180,15 @@ function M.on_tick()
 
     local tech_name = data.technology
     local cond = conditions[tech_name]
-    if not cond then goto continue end
+    if not cond then
+      goto continue
+    end
 
     -- Check if already researched (card is now useless for this tech).
     local tech = entity.force.technologies[tech_name]
-    if tech and tech.researched then goto continue end
+    if tech and tech.researched then
+      goto continue
+    end
 
     if conditions_met(entity.surface, entity.position, cond) then
       -- Each on_nth_tick(60) call represents 1 second of qualifying production.

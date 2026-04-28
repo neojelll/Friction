@@ -33,8 +33,7 @@ local function build_gui(player, entity)
   local label = frame.add({
     type = "label",
     name = "friction-analyzer-tech",
-    caption = tech_name
-      and { "gui.friction-analyzer-tracking", { "technology-name." .. tech_name } }
+    caption = tech_name and { "gui.friction-analyzer-tracking", { "technology-name." .. tech_name } }
       or { "gui.friction-analyzer-no-card" },
   })
   label.style.single_line = false
@@ -45,19 +44,26 @@ local function build_gui(player, entity)
     name = "friction-analyzer-bar",
     value = progress,
     style = "achievement_progressbar",
-  }).style.width = 160
+  }).style.width =
+    160
 end
 
 function M.on_gui_opened(event)
-  if event.gui_type ~= defines.gui_type.entity then return end
+  if event.gui_type ~= defines.gui_type.entity then
+    return
+  end
   local entity = event.entity
-  if not entity or not entity.valid or entity.name ~= ENTITY_NAME then return end
+  if not entity or not entity.valid or entity.name ~= ENTITY_NAME then
+    return
+  end
   local player = game.players[event.player_index]
   build_gui(player, entity)
 end
 
 function M.on_gui_closed(event)
-  if event.gui_type ~= defines.gui_type.entity then return end
+  if event.gui_type ~= defines.gui_type.entity then
+    return
+  end
   local player = game.players[event.player_index]
   if player.gui.relative[GUI_NAME] then
     player.gui.relative[GUI_NAME].destroy()
@@ -68,15 +74,18 @@ end
 function M.refresh(entity, progress, tech_name)
   for _, player in pairs(entity.force.players) do
     local panel = player.gui.relative[GUI_NAME]
-    if not panel then goto continue end
+    if not panel then
+      goto continue
+    end
 
     local bar = panel["friction-analyzer-bar"]
-    if bar then bar.value = progress end
+    if bar then
+      bar.value = progress
+    end
 
     local lbl = panel["friction-analyzer-tech"]
     if lbl then
-      lbl.caption = tech_name
-        and { "gui.friction-analyzer-tracking", { "technology-name." .. tech_name } }
+      lbl.caption = tech_name and { "gui.friction-analyzer-tracking", { "technology-name." .. tech_name } }
         or { "gui.friction-analyzer-no-card" }
     end
 

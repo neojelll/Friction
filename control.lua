@@ -45,7 +45,9 @@ commands.add_command("friction-debug", "Debug data analyzers", function(event)
     local stack = inv and inv[1]
     if stack and stack.valid_for_read then
       player.print("  card: " .. stack.name)
-      local ok, tags = pcall(function() return stack.tags end)
+      local ok, tags = pcall(function()
+        return stack.tags
+      end)
       if ok then
         local tech = tostring(tags and tags.technology)
         local prog = tostring(tags and tags.progress)
