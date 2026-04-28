@@ -39,30 +39,16 @@ commands.add_command("friction-debug", "Debug data analyzers", function(event)
       goto continue
     end
     player.print("--- Analyzer " .. id .. " ---")
-    player.print("  technology: " .. tostring(data.technology))
-    player.print("  progress:   " .. string.format("%.3f", data.progress))
+    player.print("  progress: " .. string.format("%.3f", data.progress))
     local inv = entity.get_inventory(defines.inventory.chest)
-    local stack = inv and inv[1]
-    if stack and stack.valid_for_read then
-      player.print("  card: " .. stack.name)
-      local ok, tags = pcall(function()
-        return stack.tags
-      end)
-      if ok then
-        local tech = tostring(tags and tags.technology)
-        local prog = tostring(tags and tags.progress)
-        player.print("  tags: tech=" .. tech .. " progress=" .. prog)
-      else
-        player.print("  tags: ERROR - " .. tostring(tags))
-      end
-    else
-      player.print("  card: empty")
-    end
-    -- scan nearby machines
+    local slot1 = inv and inv[1]
+    local slot2 = inv and inv[2]
+    player.print("  slot1: " .. (slot1 and slot1.valid_for_read and slot1.name or "empty"))
+    player.print("  slot2: " .. (slot2 and slot2.valid_for_read and slot2.name or "empty"))
     local surface = entity.surface
-    local found = surface.find_entities_filtered({ position = entity.position, radius = 30, type = "furnace" })
-    player.print("  furnaces in radius 30: " .. #found)
-    for _, f in pairs(found) do
+    local furnaces = surface.find_entities_filtered({ position = entity.position, radius = 50, type = "furnace" })
+    player.print("  furnaces in radius 50: " .. #furnaces)
+    for _, f in pairs(furnaces) do
       if f.valid then
         local recipe = f.get_recipe()
         local rname = tostring(recipe and recipe.name)

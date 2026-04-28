@@ -12,7 +12,8 @@ data:extend({
     corpse = "small-remnants",
     collision_box = { { -0.7, -0.7 }, { 0.7, 0.7 } },
     selection_box = { { -1, -1 }, { 1, 1 } },
-    inventory_size = 1,
+    inventory_size = 2,
+    supply_area_distance = 50,
     picture = {
       filename = "__Friction__/graphics/entity/buildings/crusher.png",
       priority = "extra-high",

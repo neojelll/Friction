@@ -3,8 +3,9 @@ local M = {}
 local ENTITY_NAME = "friction-data-analyzer"
 local GUI_NAME = "friction-analyzer-panel"
 
-local function get_analyzer_data(entity)
-  return storage.analyzers and storage.analyzers[entity.unit_number]
+local function get_progress(entity)
+  local data = storage.analyzers and storage.analyzers[entity.unit_number]
+  return data and data.progress or 0
 end
 
 local function build_gui(player, entity)
@@ -26,26 +27,22 @@ local function build_gui(player, entity)
   })
   frame.style.width = 180
 
-  local data = get_analyzer_data(entity)
-  local progress = data and data.progress or 0
-  local tech_name = data and data.technology or nil
+  local inv = entity.get_inventory(defines.inventory.chest)
+  local slot1 = inv and inv[1]
+  local has_card = slot1 and slot1.valid_for_read and slot1.name == "friction-data-card"
 
-  local label = frame.add({
+  frame.add({
     type = "label",
-    name = "friction-analyzer-tech",
-    caption = tech_name and { "gui.friction-analyzer-tracking", { "technology-name." .. tech_name } }
-      or { "gui.friction-analyzer-no-card" },
-  })
-  label.style.single_line = false
-  label.style.maximal_width = 160
+    name = "friction-analyzer-status",
+    caption = has_card and { "gui.friction-analyzer-filling" } or { "gui.friction-analyzer-no-card" },
+  }).style.single_line = false
 
   frame.add({
     type = "progressbar",
     name = "friction-analyzer-bar",
-    value = progress,
+    value = get_progress(entity),
     style = "achievement_progressbar",
-  }).style.width =
-    160
+  }).style.width = 160
 end
 
 function M.on_gui_opened(event)
@@ -56,8 +53,7 @@ function M.on_gui_opened(event)
   if not entity or not entity.valid or entity.name ~= ENTITY_NAME then
     return
   end
-  local player = game.players[event.player_index]
-  build_gui(player, entity)
+  build_gui(game.players[event.player_index], entity)
 end
 
 function M.on_gui_closed(event)
@@ -70,8 +66,7 @@ function M.on_gui_closed(event)
   end
 end
 
--- Called from analyzer.on_tick to refresh any open panels.
-function M.refresh(entity, progress, tech_name)
+function M.refresh(entity, progress)
   for _, player in pairs(entity.force.players) do
     local panel = player.gui.relative[GUI_NAME]
     if not panel then
@@ -81,12 +76,6 @@ function M.refresh(entity, progress, tech_name)
     local bar = panel["friction-analyzer-bar"]
     if bar then
       bar.value = progress
-    end
-
-    local lbl = panel["friction-analyzer-tech"]
-    if lbl then
-      lbl.caption = tech_name and { "gui.friction-analyzer-tracking", { "technology-name." .. tech_name } }
-        or { "gui.friction-analyzer-no-card" }
     end
 
     ::continue::
