@@ -26,6 +26,10 @@ script.on_nth_tick(60, analyzer.on_tick)
 script.on_event(defines.events.on_gui_opened, analyzer_gui.on_gui_opened)
 script.on_event(defines.events.on_gui_closed, analyzer_gui.on_gui_closed)
 
+commands.add_command("friction-test-render", "Test rendering circle", function(event)
+  analyzer_gui.draw_test_circle(game.players[event.player_index])
+end)
+
 commands.add_command("friction-debug", "Debug data analyzers", function(event)
   local player = game.players[event.player_index]
   if not storage.analyzers or not next(storage.analyzers) then

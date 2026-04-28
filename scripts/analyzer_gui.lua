@@ -22,15 +22,37 @@ end
 
 local function draw_radius_render(player, entity)
   clear_radius_render(player.index)
-  renders[player.index] = rendering.draw_circle({
+  local ok, result = pcall(rendering.draw_circle, {
     color = { r = 0.2, g = 0.9, b = 0.2, a = 0.5 },
     radius = SCAN_RADIUS,
     width = 3,
     filled = false,
     target = entity.position,
     surface = entity.surface,
-    players = { player },
+    players = { player.index },
   })
+  if ok then
+    renders[player.index] = result
+  else
+    player.print("[friction] render error: " .. tostring(result))
+  end
+end
+
+function M.draw_test_circle(player)
+  local ok, result = pcall(rendering.draw_circle, {
+    color = { r = 1, g = 0, b = 0, a = 0.8 },
+    radius = 10,
+    width = 4,
+    filled = false,
+    target = player.position,
+    surface = player.surface,
+    time_to_live = 300,
+  })
+  if ok then
+    player.print("[friction] test circle drawn, id=" .. tostring(result and result.id))
+  else
+    player.print("[friction] test circle FAILED: " .. tostring(result))
+  end
 end
 
 local function build_gui(player, entity)
