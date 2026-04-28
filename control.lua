@@ -23,7 +23,7 @@ for _, event in pairs(removed_events) do
 end
 
 script.on_nth_tick(60, analyzer.on_tick)
-script.on_tick(function() analyzer_gui.on_tick_render() end)
+script.on_event(defines.events.on_tick, function() analyzer_gui.on_tick_render() end)
 script.on_event(defines.events.on_gui_opened, analyzer_gui.on_gui_opened)
 script.on_event(defines.events.on_gui_closed, analyzer_gui.on_gui_closed)
 script.on_event(defines.events.on_selected_entity_changed, analyzer_gui.on_selected_entity_changed)
