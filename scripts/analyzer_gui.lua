@@ -2,10 +2,39 @@ local M = {}
 
 local ENTITY_NAME = "friction-data-analyzer"
 local GUI_NAME = "friction-analyzer-panel"
+local SCAN_RADIUS = 50
 
 local function get_progress(entity)
   local data = storage.analyzers and storage.analyzers[entity.unit_number]
   return data and data.progress or 0
+end
+
+local function clear_radius_render(player_index)
+  if not storage.analyzer_renders then
+    return
+  end
+  local obj = storage.analyzer_renders[player_index]
+  if obj and obj.valid then
+    obj.destroy()
+  end
+  storage.analyzer_renders[player_index] = nil
+end
+
+local function draw_radius_render(player, entity)
+  if not storage.analyzer_renders then
+    storage.analyzer_renders = {}
+  end
+  clear_radius_render(player.index)
+  storage.analyzer_renders[player.index] = rendering.draw_circle({
+    color = { r = 0.2, g = 0.9, b = 0.2, a = 0.2 },
+    radius = SCAN_RADIUS,
+    width = 2,
+    filled = false,
+    target = entity.position,
+    surface = entity.surface,
+    players = { player },
+    draw_on_ground = true,
+  })
 end
 
 local function build_gui(player, entity)
@@ -53,7 +82,9 @@ function M.on_gui_opened(event)
   if not entity or not entity.valid or entity.name ~= ENTITY_NAME then
     return
   end
-  build_gui(game.players[event.player_index], entity)
+  local player = game.players[event.player_index]
+  build_gui(player, entity)
+  draw_radius_render(player, entity)
 end
 
 function M.on_gui_closed(event)
@@ -64,6 +95,7 @@ function M.on_gui_closed(event)
   if player.gui.relative[GUI_NAME] then
     player.gui.relative[GUI_NAME].destroy()
   end
+  clear_radius_render(event.player_index)
 end
 
 function M.refresh(entity, progress)
@@ -72,12 +104,10 @@ function M.refresh(entity, progress)
     if not panel then
       goto continue
     end
-
     local bar = panel["friction-analyzer-bar"]
     if bar then
       bar.value = progress
     end
-
     ::continue::
   end
 end
