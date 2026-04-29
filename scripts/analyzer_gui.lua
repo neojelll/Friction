@@ -4,16 +4,29 @@ local ENTITY_NAME = "friction-data-analyzer"
 local GUI_NAME = "friction-analyzer-panel"
 local SCAN_RADIUS = 50
 
--- Only the GUI-open circle is drawn via Lua; cursor/hover are handled by
--- radius_visualisation_specification in the entity prototype.
 local gui_renders = {}
+local hover_renders = {}
 
-local function clear_render(player_index)
-  local obj = gui_renders[player_index]
+local function clear_render(tbl, player_index)
+  local obj = tbl[player_index]
   if obj and obj.valid then
     obj.destroy()
   end
-  gui_renders[player_index] = nil
+  tbl[player_index] = nil
+end
+
+local function draw_area_rect(target_pos, surface, player)
+  local d = SCAN_RADIUS
+  local ok, result = pcall(rendering.draw_rectangle, {
+    color = { r = 0, g = 0.6, b = 0.8, a = 0.25 },
+    left_top = { x = target_pos.x - d, y = target_pos.y - d },
+    right_bottom = { x = target_pos.x + d, y = target_pos.y + d },
+    width = 2,
+    filled = false,
+    surface = surface,
+    players = { player },
+  })
+  return ok and result or nil
 end
 
 local function get_progress(entity)
@@ -68,19 +81,8 @@ function M.on_gui_opened(event)
   end
   local player = game.players[event.player_index]
   build_gui(player, entity)
-  clear_render(player.index)
-  local ok, result = pcall(rendering.draw_circle, {
-    color = { r = 0.2, g = 0.9, b = 0.2, a = 0.4 },
-    radius = SCAN_RADIUS,
-    width = 2,
-    filled = false,
-    target = entity.position,
-    surface = entity.surface,
-    players = { player },
-  })
-  if ok then
-    gui_renders[player.index] = result
-  end
+  clear_render(gui_renders, player.index)
+  gui_renders[player.index] = draw_area_rect(entity.position, entity.surface, player)
 end
 
 function M.on_gui_closed(event)
@@ -91,7 +93,21 @@ function M.on_gui_closed(event)
   if player.gui.relative[GUI_NAME] then
     player.gui.relative[GUI_NAME].destroy()
   end
-  clear_render(event.player_index)
+  clear_render(gui_renders, event.player_index)
+end
+
+function M.on_selected_entity_changed(event)
+  local player = game.players[event.player_index]
+  if not player or not player.valid then
+    return
+  end
+  local entity = player.selected
+  if entity and entity.valid and entity.name == ENTITY_NAME then
+    clear_render(hover_renders, player.index)
+    hover_renders[player.index] = draw_area_rect(entity.position, entity.surface, player)
+  else
+    clear_render(hover_renders, player.index)
+  end
 end
 
 function M.refresh(entity, progress)
