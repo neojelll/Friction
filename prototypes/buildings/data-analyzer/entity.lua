@@ -13,11 +13,6 @@ data:extend({
     collision_box = { { -0.7, -0.7 }, { 0.7, 0.7 } },
     selection_box = { { -1, -1 }, { 1, 1 } },
     inventory_size = 2,
-    radius_visualisation_specification = {
-      distance = 50,
-      draw_in_cursor = true,
-      draw_on_selection = true,
-    },
     picture = {
       filename = "__Friction__/graphics/entity/buildings/data-analyzer.png",
       priority = "extra-high",
@@ -25,6 +20,26 @@ data:extend({
       height = 256,
       shift = { -0.25 / 32, 6 / 32 },
       scale = 0.5,
+    },
+  },
+  -- Companion entity: electric-pole used solely for native supply-area radius
+  -- visualization (cursor preview + hover highlight). No wires, no power.
+  {
+    type = "electric-pole",
+    name = "friction-data-analyzer-pole",
+    flags = { "not-blueprintable", "not-deconstructable", "not-on-map" },
+    max_health = 1,
+    collision_box = { { 0, 0 }, { 0, 0 } },
+    selection_box = { { -1.05, -1.05 }, { 1.05, 1.05 } },
+    supply_area_distance = 50,
+    maximum_wire_distance = 0,
+    connection_range = 0,
+    pictures = {
+      filename = "__Friction__/graphics/icons/items/data-card.png",
+      width = 64,
+      height = 64,
+      scale = 0.001,
+      direction_count = 1,
     },
   },
 })

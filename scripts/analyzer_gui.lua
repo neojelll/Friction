@@ -1,33 +1,8 @@
 local M = {}
 
 local ENTITY_NAME = "friction-data-analyzer"
+local POLE_NAME = "friction-data-analyzer-pole"
 local GUI_NAME = "friction-analyzer-panel"
-local SCAN_RADIUS = 50
-
-local gui_renders = {}
-local hover_renders = {}
-
-local function clear_render(tbl, player_index)
-  local obj = tbl[player_index]
-  if obj and obj.valid then
-    obj.destroy()
-  end
-  tbl[player_index] = nil
-end
-
-local function draw_area_rect(target_pos, surface, player)
-  local d = SCAN_RADIUS
-  local ok, result = pcall(rendering.draw_rectangle, {
-    color = { r = 0, g = 0.6, b = 0.8, a = 0.25 },
-    left_top = { x = target_pos.x - d, y = target_pos.y - d },
-    right_bottom = { x = target_pos.x + d, y = target_pos.y + d },
-    width = 2,
-    filled = false,
-    surface = surface,
-    players = { player },
-  })
-  return ok and result or nil
-end
 
 local function get_progress(entity)
   local data = storage.analyzers and storage.analyzers[entity.unit_number]
@@ -78,13 +53,29 @@ function M.on_gui_opened(event)
     return
   end
   local entity = event.entity
-  if not entity or not entity.valid or entity.name ~= ENTITY_NAME then
+  if not entity or not entity.valid then
+    return
+  end
+
+  -- Companion pole intercepted: redirect the open to the real container.
+  if entity.name == POLE_NAME then
+    local player = game.players[event.player_index]
+    for _, entry in pairs(storage.analyzers or {}) do
+      if entry.pole and entry.pole.valid and entry.pole == entity then
+        if entry.entity and entry.entity.valid then
+          player.opened = entry.entity
+        end
+        return
+      end
+    end
+    return
+  end
+
+  if entity.name ~= ENTITY_NAME then
     return
   end
   local player = game.players[event.player_index]
   build_gui(player, entity)
-  clear_render(gui_renders, player.index)
-  gui_renders[player.index] = draw_area_rect(entity.position, entity.surface, player)
 end
 
 function M.on_gui_closed(event)
@@ -94,21 +85,6 @@ function M.on_gui_closed(event)
   local player = game.players[event.player_index]
   if player.gui.relative[GUI_NAME] then
     player.gui.relative[GUI_NAME].destroy()
-  end
-  clear_render(gui_renders, event.player_index)
-end
-
-function M.on_selected_entity_changed(event)
-  local player = game.players[event.player_index]
-  if not player or not player.valid then
-    return
-  end
-  local entity = player.selected
-  if entity and entity.valid and entity.name == ENTITY_NAME then
-    clear_render(hover_renders, player.index)
-    hover_renders[player.index] = draw_area_rect(entity.position, entity.surface, player)
-  else
-    clear_render(hover_renders, player.index)
   end
 end
 

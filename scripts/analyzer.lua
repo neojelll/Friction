@@ -3,6 +3,7 @@ local analyzer_gui = require("scripts.analyzer_gui")
 local M = {}
 
 local ENTITY_NAME = "friction-data-analyzer"
+local POLE_NAME = "friction-data-analyzer-pole"
 local BLANK_CARD = "friction-data-card"
 local TECH_CARD_1 = "friction-tech-card-1"
 local SCAN_TYPES = { "assembling-machine", "furnace", "rocket-silo" }
@@ -52,13 +53,23 @@ end
 function M.on_load() end
 
 local function register_analyzer(entity)
+  local pole = entity.surface.create_entity({
+    name = POLE_NAME,
+    position = entity.position,
+    force = entity.force,
+  })
   storage.analyzers[entity.unit_number] = {
     entity = entity,
+    pole = pole,
     progress = 0,
   }
 end
 
 local function unregister_analyzer(entity)
+  local data = storage.analyzers[entity.unit_number]
+  if data and data.pole and data.pole.valid then
+    data.pole.destroy()
+  end
   storage.analyzers[entity.unit_number] = nil
 end
 
