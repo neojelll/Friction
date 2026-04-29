@@ -49,8 +49,7 @@ function M.on_init()
   storage.analyzers = {}
 end
 
-function M.on_load()
-end
+function M.on_load() end
 
 local function register_analyzer(entity)
   storage.analyzers[entity.unit_number] = {

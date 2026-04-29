@@ -61,14 +61,16 @@ local function build_gui(player, entity)
     type = "label",
     name = "friction-analyzer-status",
     caption = has_card and { "gui.friction-analyzer-filling" } or { "gui.friction-analyzer-no-card" },
-  }).style.single_line = false
+  }).style.single_line =
+    false
 
   frame.add({
     type = "progressbar",
     name = "friction-analyzer-bar",
     value = get_progress(entity),
     style = "achievement_progressbar",
-  }).style.width = 160
+  }).style.width =
+    160
 end
 
 function M.on_gui_opened(event)
