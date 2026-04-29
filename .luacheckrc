@@ -15,6 +15,7 @@ globals = {
   "log",
   "table_size",
   "localised_print",
+  "rendering",
 }
 
 read_globals = {

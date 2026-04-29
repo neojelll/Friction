@@ -1,4 +1,14 @@
-table.insert(data.raw.lab["lab"].inputs, "friction-full-data-card")
+table.insert(data.raw.lab["lab"].inputs, "friction-tech-card-1")
+
+for _, tech in pairs(data.raw.technology) do
+  if tech.unit and tech.unit.ingredients then
+    for i, ing in pairs(tech.unit.ingredients) do
+      if ing[1] == "automation-science-pack" or ing.name == "automation-science-pack" then
+        tech.unit.ingredients[i] = { "friction-tech-card-1", ing[2] or ing.amount }
+      end
+    end
+  end
+end
 
 local function add_glass(recipe_name, amount)
   local recipe = data.raw.recipe[recipe_name]
