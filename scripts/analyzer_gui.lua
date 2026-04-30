@@ -1,40 +1,10 @@
 local M = {}
 
 local ENTITY_NAME = "friction-data-analyzer"
+local CHEST_NAME = "friction-data-analyzer-chest"
 local GUI_NAME = "friction-analyzer-panel"
-local SCAN_RADIUS = 50
 
-local gui_renders = {}
-local hover_renders = {}
-
-local function clear_render(tbl, player_index)
-  local obj = tbl[player_index]
-  if obj and obj.valid then
-    obj.destroy()
-  end
-  tbl[player_index] = nil
-end
-
-local function draw_area_rect(target_pos, surface, player)
-  local d = SCAN_RADIUS
-  local ok, result = pcall(rendering.draw_rectangle, {
-    color = { r = 0, g = 0.6, b = 0.8, a = 0.25 },
-    left_top = { x = target_pos.x - d, y = target_pos.y - d },
-    right_bottom = { x = target_pos.x + d, y = target_pos.y + d },
-    width = 2,
-    filled = false,
-    surface = surface,
-    players = { player },
-  })
-  return ok and result or nil
-end
-
-local function get_progress(entity)
-  local data = storage.analyzers and storage.analyzers[entity.unit_number]
-  return data and data.progress or 0
-end
-
-local function build_gui(player, entity)
+local function build_gui(player, chest, pole_id)
   if player.gui.relative[GUI_NAME] then
     player.gui.relative[GUI_NAME].destroy()
   end
@@ -53,7 +23,7 @@ local function build_gui(player, entity)
   })
   frame.style.width = 180
 
-  local inv = entity.get_inventory(defines.inventory.chest)
+  local inv = chest.get_inventory(defines.inventory.chest)
   local slot1 = inv and inv[1]
   local has_card = slot1 and slot1.valid_for_read and slot1.name == "friction-data-card"
 
@@ -64,10 +34,11 @@ local function build_gui(player, entity)
   }).style.single_line =
     false
 
+  local data = storage.analyzers and storage.analyzers[pole_id]
   frame.add({
     type = "progressbar",
     name = "friction-analyzer-bar",
-    value = get_progress(entity),
+    value = data and data.progress or 0,
     style = "achievement_progressbar",
   }).style.width =
     160
@@ -78,13 +49,29 @@ function M.on_gui_opened(event)
     return
   end
   local entity = event.entity
-  if not entity or not entity.valid or entity.name ~= ENTITY_NAME then
+  if not entity or not entity.valid then
     return
   end
-  local player = game.players[event.player_index]
-  build_gui(player, entity)
-  clear_render(gui_renders, player.index)
-  gui_renders[player.index] = draw_area_rect(entity.position, entity.surface, player)
+
+  -- Pole opened: redirect to the hidden inventory chest.
+  if entity.name == ENTITY_NAME then
+    local player = game.players[event.player_index]
+    local data = storage.analyzers and storage.analyzers[entity.unit_number]
+    if data and data.chest and data.chest.valid then
+      player.opened = data.chest
+    end
+    return
+  end
+
+  -- Chest opened (after redirect from pole): build the info panel.
+  if entity.name == CHEST_NAME then
+    local player = game.players[event.player_index]
+    local pole_id = storage.chest_to_pole and storage.chest_to_pole[entity.unit_number]
+    if pole_id then
+      build_gui(player, entity, pole_id)
+    end
+    return
+  end
 end
 
 function M.on_gui_closed(event)
@@ -95,25 +82,10 @@ function M.on_gui_closed(event)
   if player.gui.relative[GUI_NAME] then
     player.gui.relative[GUI_NAME].destroy()
   end
-  clear_render(gui_renders, event.player_index)
 end
 
-function M.on_selected_entity_changed(event)
-  local player = game.players[event.player_index]
-  if not player or not player.valid then
-    return
-  end
-  local entity = player.selected
-  if entity and entity.valid and entity.name == ENTITY_NAME then
-    clear_render(hover_renders, player.index)
-    hover_renders[player.index] = draw_area_rect(entity.position, entity.surface, player)
-  else
-    clear_render(hover_renders, player.index)
-  end
-end
-
-function M.refresh(entity, progress)
-  for _, player in pairs(entity.force.players) do
+function M.refresh(pole, progress)
+  for _, player in pairs(pole.force.players) do
     local panel = player.gui.relative[GUI_NAME]
     if not panel then
       goto continue

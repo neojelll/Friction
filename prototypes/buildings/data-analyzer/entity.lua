@@ -1,6 +1,8 @@
 data:extend({
+  -- Main entity: electric-pole so the engine renders the supply-area
+  -- square natively on hover and during cursor placement.
   {
-    type = "container",
+    type = "electric-pole",
     name = "friction-data-analyzer",
     localised_name = { "entity-name.friction-data-analyzer" },
     localised_description = { "entity-description.friction-data-analyzer" },
@@ -12,19 +14,35 @@ data:extend({
     corpse = "small-remnants",
     collision_box = { { -0.7, -0.7 }, { 0.7, 0.7 } },
     selection_box = { { -1, -1 }, { 1, 1 } },
-    inventory_size = 2,
-    radius_visualisation_specification = {
-      distance = 50,
-      draw_in_cursor = true,
-      draw_on_selection = true,
-    },
-    picture = {
+    supply_area_distance = 50,
+    maximum_wire_distance = 0,
+    connection_range = 0,
+    connection_points = { { wire = {}, shadow = {} } },
+    pictures = {
       filename = "__Friction__/graphics/entity/buildings/data-analyzer.png",
       priority = "extra-high",
       width = 256,
       height = 256,
       shift = { -0.25 / 32, 6 / 32 },
       scale = 0.5,
+      direction_count = 1,
+    },
+  },
+  -- Hidden container placed alongside the pole to hold the 2-slot inventory.
+  -- Not selectable; opened programmatically when the player opens the pole.
+  {
+    type = "container",
+    name = "friction-data-analyzer-chest",
+    flags = { "not-blueprintable", "not-deconstructable", "not-selectable-in-game" },
+    collision_box = { { 0, 0 }, { 0, 0 } },
+    selection_box = { { 0, 0 }, { 0, 0 } },
+    max_health = 1,
+    inventory_size = 2,
+    picture = {
+      filename = "__Friction__/graphics/icons/items/data-card.png",
+      width = 64,
+      height = 64,
+      scale = 0.001,
     },
   },
 })
