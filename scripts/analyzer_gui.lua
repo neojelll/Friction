@@ -1,15 +1,10 @@
 local M = {}
 
 local ENTITY_NAME = "friction-data-analyzer"
-local POLE_NAME = "friction-data-analyzer-pole"
+local CHEST_NAME = "friction-data-analyzer-chest"
 local GUI_NAME = "friction-analyzer-panel"
 
-local function get_progress(entity)
-  local data = storage.analyzers and storage.analyzers[entity.unit_number]
-  return data and data.progress or 0
-end
-
-local function build_gui(player, entity)
+local function build_gui(player, chest, pole_id)
   if player.gui.relative[GUI_NAME] then
     player.gui.relative[GUI_NAME].destroy()
   end
@@ -28,7 +23,7 @@ local function build_gui(player, entity)
   })
   frame.style.width = 180
 
-  local inv = entity.get_inventory(defines.inventory.chest)
+  local inv = chest.get_inventory(defines.inventory.chest)
   local slot1 = inv and inv[1]
   local has_card = slot1 and slot1.valid_for_read and slot1.name == "friction-data-card"
 
@@ -39,10 +34,11 @@ local function build_gui(player, entity)
   }).style.single_line =
     false
 
+  local data = storage.analyzers and storage.analyzers[pole_id]
   frame.add({
     type = "progressbar",
     name = "friction-analyzer-bar",
-    value = get_progress(entity),
+    value = data and data.progress or 0,
     style = "achievement_progressbar",
   }).style.width =
     160
@@ -57,25 +53,25 @@ function M.on_gui_opened(event)
     return
   end
 
-  -- Companion pole intercepted: redirect the open to the real container.
-  if entity.name == POLE_NAME then
+  -- Pole opened: redirect to the hidden inventory chest.
+  if entity.name == ENTITY_NAME then
     local player = game.players[event.player_index]
-    for _, entry in pairs(storage.analyzers or {}) do
-      if entry.pole and entry.pole.valid and entry.pole == entity then
-        if entry.entity and entry.entity.valid then
-          player.opened = entry.entity
-        end
-        return
-      end
+    local data = storage.analyzers and storage.analyzers[entity.unit_number]
+    if data and data.chest and data.chest.valid then
+      player.opened = data.chest
     end
     return
   end
 
-  if entity.name ~= ENTITY_NAME then
+  -- Chest opened (after redirect from pole): build the info panel.
+  if entity.name == CHEST_NAME then
+    local player = game.players[event.player_index]
+    local pole_id = storage.chest_to_pole and storage.chest_to_pole[entity.unit_number]
+    if pole_id then
+      build_gui(player, entity, pole_id)
+    end
     return
   end
-  local player = game.players[event.player_index]
-  build_gui(player, entity)
 end
 
 function M.on_gui_closed(event)
@@ -88,8 +84,8 @@ function M.on_gui_closed(event)
   end
 end
 
-function M.refresh(entity, progress)
-  for _, player in pairs(entity.force.players) do
+function M.refresh(pole, progress)
+  for _, player in pairs(pole.force.players) do
     local panel = player.gui.relative[GUI_NAME]
     if not panel then
       goto continue

@@ -3,7 +3,7 @@ local analyzer_gui = require("scripts.analyzer_gui")
 local M = {}
 
 local ENTITY_NAME = "friction-data-analyzer"
-local POLE_NAME = "friction-data-analyzer-pole"
+local CHEST_NAME = "friction-data-analyzer-chest"
 local BLANK_CARD = "friction-data-card"
 local TECH_CARD_1 = "friction-tech-card-1"
 local SCAN_TYPES = { "assembling-machine", "furnace", "rocket-silo" }
@@ -48,29 +48,33 @@ end
 
 function M.on_init()
   storage.analyzers = {}
+  storage.chest_to_pole = {}
 end
 
 function M.on_load() end
 
-local function register_analyzer(entity)
-  local pole = entity.surface.create_entity({
-    name = POLE_NAME,
-    position = entity.position,
-    force = entity.force,
+local function register_analyzer(pole)
+  local chest = pole.surface.create_entity({
+    name = CHEST_NAME,
+    position = pole.position,
+    force = pole.force,
   })
-  storage.analyzers[entity.unit_number] = {
-    entity = entity,
-    pole = pole,
-    progress = 0,
-  }
+  local data = { entity = pole, chest = chest, progress = 0 }
+  storage.analyzers[pole.unit_number] = data
+  if chest then
+    storage.chest_to_pole[chest.unit_number] = pole.unit_number
+  end
 end
 
-local function unregister_analyzer(entity)
-  local data = storage.analyzers[entity.unit_number]
-  if data and data.pole and data.pole.valid then
-    data.pole.destroy()
+local function unregister_analyzer(pole)
+  local data = storage.analyzers[pole.unit_number]
+  if data then
+    if data.chest and data.chest.valid then
+      storage.chest_to_pole[data.chest.unit_number] = nil
+      data.chest.destroy()
+    end
+    storage.analyzers[pole.unit_number] = nil
   end
-  storage.analyzers[entity.unit_number] = nil
 end
 
 function M.on_built(event)
@@ -89,12 +93,17 @@ end
 
 function M.on_tick()
   for _, data in pairs(storage.analyzers) do
-    local entity = data.entity
-    if not entity or not entity.valid then
+    local pole = data.entity
+    local chest = data.chest
+
+    if not pole or not pole.valid then
+      goto continue
+    end
+    if not chest or not chest.valid then
       goto continue
     end
 
-    local inv = entity.get_inventory(defines.inventory.chest)
+    local inv = chest.get_inventory(defines.inventory.chest)
     if not inv then
       goto continue
     end
@@ -105,7 +114,7 @@ function M.on_tick()
     -- Need a blank card in slot 1 and slot 2 must be empty.
     if not slot1 or not slot1.valid_for_read or slot1.name ~= BLANK_CARD then
       data.progress = 0
-      analyzer_gui.refresh(entity, 0)
+      analyzer_gui.refresh(pole, 0)
       goto continue
     end
     if slot2 and slot2.valid_for_read then
@@ -113,7 +122,7 @@ function M.on_tick()
       goto continue
     end
 
-    local iron_per_sec = measure_iron_per_sec(entity.surface, entity.position)
+    local iron_per_sec = measure_iron_per_sec(pole.surface, pole.position)
     -- 1 iron/sec = 1%/sec, so each on_nth_tick(60) call adds iron_per_sec * 0.01
     data.progress = data.progress + iron_per_sec * 0.01
 
@@ -121,9 +130,9 @@ function M.on_tick()
       data.progress = 0
       inv[1].clear()
       inv[2].set_stack({ name = TECH_CARD_1, count = 1 })
-      analyzer_gui.refresh(entity, 0)
+      analyzer_gui.refresh(pole, 0)
     else
-      analyzer_gui.refresh(entity, data.progress)
+      analyzer_gui.refresh(pole, data.progress)
     end
 
     ::continue::
