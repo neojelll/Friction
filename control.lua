@@ -3,6 +3,7 @@ local analyzer_gui = require("scripts.analyzer_gui")
 
 script.on_init(analyzer.on_init)
 script.on_load(analyzer.on_load)
+script.on_configuration_changed(analyzer.on_configuration_changed)
 
 local built_events = {
   defines.events.on_built_entity,

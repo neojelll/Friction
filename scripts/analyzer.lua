@@ -53,6 +53,29 @@ end
 
 function M.on_load() end
 
+function M.on_configuration_changed()
+  if not storage.analyzers then
+    storage.analyzers = {}
+  end
+  if not storage.chest_to_pole then
+    storage.chest_to_pole = {}
+  end
+  for _, data in pairs(storage.analyzers) do
+    local pole = data.entity
+    if pole and pole.valid and (not data.chest or not data.chest.valid) then
+      local chest = pole.surface.create_entity({
+        name = CHEST_NAME,
+        position = pole.position,
+        force = pole.force,
+      })
+      data.chest = chest
+      if chest then
+        storage.chest_to_pole[chest.unit_number] = pole.unit_number
+      end
+    end
+  end
+end
+
 local function register_analyzer(pole)
   local chest = pole.surface.create_entity({
     name = CHEST_NAME,
