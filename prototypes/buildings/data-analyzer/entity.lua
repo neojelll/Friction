@@ -34,6 +34,7 @@ data:extend({
     supply_area_distance = 50,
     maximum_wire_distance = 0,
     connection_range = 0,
+    connection_points = { { wire = {}, shadow = {} } },
     pictures = {
       filename = "__Friction__/graphics/icons/items/data-card.png",
       width = 64,
