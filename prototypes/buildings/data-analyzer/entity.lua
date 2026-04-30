@@ -33,7 +33,7 @@ data:extend({
   {
     type = "container",
     name = "friction-data-analyzer-chest",
-    flags = { "not-blueprintable", "not-deconstructable", "not-selectable-in-game", "hidden" },
+    flags = { "not-blueprintable", "not-deconstructable", "not-selectable-in-game" },
     collision_box = { { 0, 0 }, { 0, 0 } },
     selection_box = { { 0, 0 }, { 0, 0 } },
     max_health = 1,
